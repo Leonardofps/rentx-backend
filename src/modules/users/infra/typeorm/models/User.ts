@@ -20,6 +20,9 @@ class User {
   password: string;
 
   @Column()
+  isAdmin: boolean;
+
+  @Column()
   image: string;
 
   @CreateDateColumn()
