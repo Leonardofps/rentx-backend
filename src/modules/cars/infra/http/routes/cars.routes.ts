@@ -2,6 +2,7 @@ import { Router } from 'express';
 import ensureAuthenticated from '../../../../users/infra/http/middlewares/ensureAuthenticated';
 
 import CreateCarService from '../../../services/CreateCarService';
+import UpdateCarService from '../../../services/UpdateCarService';
 
 const carsRouter = Router();
 
@@ -14,6 +15,25 @@ carsRouter.post('/', async (request, response) => {
     const createCar = new CreateCarService();
 
     const car = await createCar.execute({ name, brand, daily_value });
+
+    return response.json(car);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
+});
+
+carsRouter.put('/:id', async (request, response) => {
+  try {
+    const { id } = request.params;
+    const { name, brand, daily_value } = request.body;
+    const updateCar = new UpdateCarService();
+
+    const car = await updateCar.execute({
+      car_id: id,
+      name,
+      brand,
+      daily_value,
+    });
 
     return response.json(car);
   } catch (err) {
